@@ -1,0 +1,8 @@
+timestamp,level,message
+2024-06-04 06:26:36,INFO, * Debugger is active!
+2024-06-04 06:26:36,INFO, * Debugger PIN: 111-075-142
+2024-06-04 07:13:40,INFO,127.0.0.1 - - [04/Jun/2024 07:13:40] "[35m[1mGET / HTTP/1.1[0m" 500 -
+2024-06-04 07:13:41,INFO,127.0.0.1 - - [04/Jun/2024 07:13:41] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+2024-06-04 07:13:41,INFO,127.0.0.1 - - [04/Jun/2024 07:13:41] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+2024-06-04 07:13:41,INFO,127.0.0.1 - - [04/Jun/2024 07:13:41] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+2024-06-04 07:13:41,INFO,127.0.0.1 - - [04/Jun/2024 07:13:41] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -

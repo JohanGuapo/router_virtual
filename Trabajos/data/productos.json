@@ -1,0 +1,12 @@
+{
+    "001": {
+        "nombre": "Manzana",
+        "precio": 0.5,
+        "cantidad": 90
+    },
+    "002": {
+        "nombre": "Banana",
+        "precio": 0.3,
+        "cantidad": 145
+    }
+}
