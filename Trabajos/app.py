@@ -9,7 +9,7 @@ import subprocess
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
-
+#ms prueba
 # Crear el archivo de log de actividad
 def get_next_log_filename(directory, prefix):
     existing_logs = [f for f in os.listdir(directory) if f.startswith(prefix) and f.endswith('.log')]
