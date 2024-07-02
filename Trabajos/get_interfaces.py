@@ -57,6 +57,7 @@ def post_loopback(name, description, ip, netmask):
             }
         }
     }
+    #johan
     module = f"data/ietf-interfaces:interfaces/interface"
     resp = requests.post(f'{api_url}{module}', auth=basicauth, headers=headers, json=dloopback, verify=False)
     if resp.status_code == 201:
