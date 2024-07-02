@@ -6,7 +6,7 @@ from tkinter import messagebox, scrolledtext, ttk
 requests.packages.urllib3.disable_warnings()
 
 # Define los URLs
-api_url_1 = "https://github.com/JohanGuapo/router_virtual.git"
+api_url_1 = "Trabajos/get_interfaces.py"
 api_url_2 = "https://192.168.56.104/restconf/"
 current_url = api_url_1  # URL por defecto
 
