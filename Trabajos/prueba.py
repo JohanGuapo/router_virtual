@@ -5,16 +5,28 @@ from tkinter import messagebox, scrolledtext, ttk
 
 requests.packages.urllib3.disable_warnings()
 
-api_url = "https://192.168.56.104/restconf/"
+# Define los URLs
+api_url_1 = "https://github.com/JohanGuapo/router_virtual.git"
+api_url_2 = "https://192.168.56.104/restconf/"
+current_url = api_url_1  # URL por defecto
+
 headers = {
     "Accept": "application/yang-data+json",
     "Content-type": "application/yang-data+json"
 }
 basicauth = ("cisco", "cisco123!")
 
+def set_api_url(event):
+    global current_url
+    selected_url = url_combobox.get()
+    if selected_url == "URL 1":
+        current_url = api_url_1
+    elif selected_url == "URL 2":
+        current_url = api_url_2
+
 def get_interfaces():
     module = "data/ietf-interfaces:interfaces"
-    resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+    resp = requests.get(f'{current_url}{module}', auth=basicauth, headers=headers, verify=False)
     if resp.status_code == 200:
         data_json = resp.json()
         result = json.dumps(data_json, indent=4)
@@ -24,7 +36,7 @@ def get_interfaces():
 
 def get_resconf_native():
     module = "data/Cisco-IOS-XE-native:native"
-    resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+    resp = requests.get(f'{current_url}{module}', auth=basicauth, headers=headers, verify=False)
     if resp.status_code == 200:
         result = json.dumps(resp.json(), indent=4)
         display_result(result)
@@ -33,7 +45,7 @@ def get_resconf_native():
 
 def get_banner():
     module = "data/Cisco-IOS-XE-native:native/banner/motd"
-    resp = requests.get(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+    resp = requests.get(f'{current_url}{module}', auth=basicauth, headers=headers, verify=False)
     if resp.status_code == 200:
         result = json.dumps(resp.json(), indent=4)
         display_result(result)
@@ -57,8 +69,8 @@ def post_loopback(name, description, ip, netmask):
             }
         }
     }
-    module = f"data/ietf-interfaces:interfaces/interface={name}"
-    resp = requests.post(f'{api_url}{module}', auth=basicauth, headers=headers, json=dloopback, verify=False)
+    module = f"data/ietf-interfaces:interfaces/interface"
+    resp = requests.post(f'{current_url}{module}', auth=basicauth, headers=headers, json=dloopback, verify=False)
     if resp.status_code == 201:
         messagebox.showinfo("Éxito", "Se insertó correctamente la Loopback")
     else:
@@ -71,7 +83,7 @@ def put_banner(message):
         }
     }
     module = "data/Cisco-IOS-XE-native:native/banner/motd"
-    resp = requests.put(f'{api_url}{module}', auth=basicauth, headers=headers, json=banner, verify=False)
+    resp = requests.put(f'{current_url}{module}', auth=basicauth, headers=headers, json=banner, verify=False)
     if resp.status_code == 201:
         messagebox.showinfo("Éxito", "Se insertó correctamente el banner")
     else:
@@ -79,7 +91,7 @@ def put_banner(message):
 
 def del_loopback(name):
     module = f"data/ietf-interfaces:interfaces/interface={name}"
-    resp = requests.delete(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+    resp = requests.delete(f'{current_url}{module}', auth=basicauth, headers=headers, verify=False)
     if resp.status_code == 204:
         messagebox.showinfo("Éxito", "Loopback eliminada correctamente")
     else:
@@ -100,6 +112,14 @@ root.title("Interfaz RESTCONF")
 notebook = ttk.Notebook(root)
 notebook.pack(pady=10, expand=True)
 
+# Combobox para seleccionar el URL
+url_label = tk.Label(root, text="Selecciona el URL:")
+url_label.pack(pady=5)
+url_combobox = ttk.Combobox(root, values=["URL 1", "URL 2"])
+url_combobox.current(0)  # Seleccionar URL 1 por defecto
+url_combobox.bind("<<ComboboxSelected>>", set_api_url)
+url_combobox.pack(pady=5)
+
 # Pestaña para Get Interfaces
 tab1 = ttk.Frame(notebook)
 notebook.add(tab1, text='Interfaces')
@@ -108,14 +128,14 @@ btn_get_interfaces.pack(padx=10, pady=10)
 
 # Pestaña para Get Resconf Native
 tab2 = ttk.Frame(notebook)
-notebook.add(tab2, text='Get Resconf Native')
-btn_get_resconf_native = tk.Button(tab2, text="Get Resconf Native", command=get_resconf_native)
+notebook.add(tab2, text='Configuraciones')
+btn_get_resconf_native = tk.Button(tab2, text="Configuraciones", command=get_resconf_native)
 btn_get_resconf_native.pack(padx=10, pady=10)
 
 # Pestaña Get Banner
 tab3 = ttk.Frame(notebook)
-notebook.add(tab3, text='Get Banner')
-btn_get_banner = tk.Button(tab3, text="Get Banner", command=get_banner)
+notebook.add(tab3, text='Banner')
+btn_get_banner = tk.Button(tab3, text="Banner", command=get_banner)
 btn_get_banner.pack(padx=10, pady=10)
 
 # Pestaña Post Loopback
@@ -124,7 +144,7 @@ notebook.add(tab4, text='Post Loopback')
 tk.Label(tab4, text="Name").grid(row=0, column=0, padx=10, pady=5)
 tk.Label(tab4, text="Description").grid(row=1, column=0, padx=10, pady=5)
 tk.Label(tab4, text="IP").grid(row=2, column=0, padx=10, pady=5)
-tk.Label(tab4, text="Netmask").grid(row=3, column=0, padx=10, pady=5)
+tk.Label(tab4, text="mascara").grid(row=3, column=0, padx=10, pady=5)
 entry_name = tk.Entry(tab4)
 entry_name.grid(row=0, column=1, padx=10, pady=5)
 entry_description = tk.Entry(tab4)
