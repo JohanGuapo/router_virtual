@@ -57,7 +57,7 @@ def post_loopback(name, description, ip, netmask):
             }
         }
     }
-    module = f"data/ietf-interfaces:interfaces/interface"
+    module = f"data/ietf-interfaces:interfaces/interface={name}"
     resp = requests.post(f'{api_url}{module}', auth=basicauth, headers=headers, json=dloopback, verify=False)
     if resp.status_code == 201:
         messagebox.showinfo("Éxito", "Se insertó correctamente la Loopback")
@@ -108,14 +108,14 @@ btn_get_interfaces.pack(padx=10, pady=10)
 
 # Pestaña para Get Resconf Native
 tab2 = ttk.Frame(notebook)
-notebook.add(tab2, text='Configuraciones')
-btn_get_resconf_native = tk.Button(tab2, text="Configuraciones", command=get_resconf_native)
+notebook.add(tab2, text='Get Resconf Native')
+btn_get_resconf_native = tk.Button(tab2, text="Get Resconf Native", command=get_resconf_native)
 btn_get_resconf_native.pack(padx=10, pady=10)
 
 # Pestaña Get Banner
 tab3 = ttk.Frame(notebook)
-notebook.add(tab3, text='Banner')
-btn_get_banner = tk.Button(tab3, text="Banner", command=get_banner)
+notebook.add(tab3, text='Get Banner')
+btn_get_banner = tk.Button(tab3, text="Get Banner", command=get_banner)
 btn_get_banner.pack(padx=10, pady=10)
 
 # Pestaña Post Loopback
@@ -124,7 +124,7 @@ notebook.add(tab4, text='Post Loopback')
 tk.Label(tab4, text="Name").grid(row=0, column=0, padx=10, pady=5)
 tk.Label(tab4, text="Description").grid(row=1, column=0, padx=10, pady=5)
 tk.Label(tab4, text="IP").grid(row=2, column=0, padx=10, pady=5)
-tk.Label(tab4, text="mascara").grid(row=3, column=0, padx=10, pady=5)
+tk.Label(tab4, text="Netmask").grid(row=3, column=0, padx=10, pady=5)
 entry_name = tk.Entry(tab4)
 entry_name.grid(row=0, column=1, padx=10, pady=5)
 entry_description = tk.Entry(tab4)
