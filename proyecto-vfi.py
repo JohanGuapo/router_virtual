@@ -61,6 +61,15 @@ def get_ip_domain():
             print('Error: No se pudo encontrar el nombre de dominio en la respuesta.')
     else:
         print(f'Error al realizar la consulta del módulo {module}. Status code: {resp.status_code}')
+
+def delete_ip_domain():
+    module = "data/Cisco-IOS-XE-native:native/ip/domain"
+    resp = requests.delete(f'{api_url}{module}', auth=basicauth, headers=headers, verify=False)
+    
+    if resp.status_code == 204:
+        print('El nombre de dominio ha sido eliminado exitosamente.')
+    else:
+        print(f'Error al realizar la eliminación del módulo {module}. Status code: {resp.status_code}')
     
 def delete_ip_domain():
     module = "data/Cisco-IOS-XE-native:native/ip/domain"
@@ -71,8 +80,10 @@ def delete_ip_domain():
     else:
         print(f'Error al realizar la eliminación del módulo {module}. Status code: {resp.status_code}')
 
+
+
 if __name__ == '__main__':
-    
+
     api_url = "https://192.168.56.101/restconf/"
     headers = {"Accept": "application/yang-data+json",
                "Content-type": "application/yang-data+json"
