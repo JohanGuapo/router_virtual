@@ -81,8 +81,30 @@ def delete_ip_domain():
         print(f'Error al realizar la eliminación del módulo {module}. Status code: {resp.status_code}')
 
 
+def post_hostname(new_hostname):
+    hostname_data = {
+        "Cisco-IOS-XE-native:hostname": new_hostname
+    }
+    module = "data/Cisco-IOS-XE-native:native/hostname"
+    resp = requests.put(f'{api_url}{module}', data=json.dumps(hostname_data), auth=basicauth, headers=headers, verify=False)
+    
+    if resp.status_code == 204:
+        print(f'Se ha cambiado el nombre de host a "{new_hostname}" exitosamente.')
+    else:
+        print(f'Error al cambiar el nombre de host a "{new_hostname}". Status code: {resp.status_code}')
+        
+          
+    
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('/index.html')
+
+
 
 if __name__ == '__main__':
+    app.run(debug=True)
 
     api_url = "https://192.168.56.101/restconf/"
     headers = {"Accept": "application/yang-data+json",
