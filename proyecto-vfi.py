@@ -97,3 +97,6 @@ if __name__ == '__main__':
     #get_resconf_native()
     #get_banner()
     #put_banner()
+    get_ip_domain
+    delete_ip_domain
+    
