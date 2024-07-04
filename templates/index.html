@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Página de inicio</title>
+    <meta charset="UTF-8">
+    <title>Network Management Interface</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <h1>¡Bienvenido a mi página web!</h1>
-    <p>Esta es una página simple creada con Flask.</p>
+    <h1>Network Management Interface</h1>
+    <div class="container">
+        <div class="section">
+            <h2>Interfaces</h2>
+            <button onclick="fetchData('/interfaces')">Get Interfaces</button>
+            <pre id="interfaces-result"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Resconf Native</h2>
+            <button onclick="fetchData('/resconf-native')">Get Resconf Native</button>
+            <pre id="resconf-native-result"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Banner</h2>
+            <button onclick="fetchData('/banner')">Get Banner</button>
+            <input type="text" id="new-banner" placeholder="Enter new banner">
+            <button onclick="updateBanner()">Update Banner</button>
+            <pre id="banner-result"></pre>
+        </div>
+
+        <div class="section">
+            <h2>IP Domain</h2>
+            <button onclick="fetchData('/ip-domain')">Get IP Domain</button>
+            <button onclick="deleteDomain()">Delete IP Domain</button>
+            <input type="text" id="domain-name" placeholder="Enter domain name">
+            <button onclick="addDomain()">Add IP Domain</button>
+            <pre id="ip-domain-result"></pre>
+        </div>
+
+        <div class="section">
+            <h2>Hostname</h2>
+            <button onclick="fetchData('/hostname')">Get Hostname</button>
+            <input type="text" id="new-hostname" placeholder="Enter new hostname">
+            <button onclick="updateHostname()">Update Hostname</button>
+            <pre id="hostname-result"></pre>
+        </div>
+    </div>
+
+    <script>
+        function fetchData(endpoint) {
+            $.get(endpoint, function(data) {
+                $('#' + endpoint.slice(1) + '-result').text(JSON.stringify(data, null, 4));
+            });
+        }
+
+        function updateBanner() {
+            const newBanner = $('#new-banner').val();
+            $.ajax({
+                url: '/banner',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ new_banner: newBanner }),
+                success: function(data) {
+                    $('#banner-result').text(JSON.stringify(data, null, 4));
+                }
+            });
+        }
+
+        function deleteDomain() {
+            $.ajax({
+                url: '/ip-domain',
+                type: 'DELETE',
+                success: function(data) {
+                    $('#ip-domain-result').text(JSON.stringify(data, null, 4));
+                }
+            });
+        }
+
+        function addDomain() {
+            const domainName = $('#domain-name').val();
+            $.ajax({
+                url: '/ip-domain',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ domain_name: domainName }),
+                success: function(data) {
+                    $('#ip-domain-result').text(JSON.stringify(data, null, 4));
+                }
+            });
+        }
+
+        function updateHostname() {
+            const newHostname = $('#new-hostname').val();
+            $.ajax({
+                url: '/hostname',
+                type: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify({ new_hostname: newHostname }),
+                success: function(data) {
+                    $('#hostname-result').text(JSON.stringify(data, null, 4));
+                }
+            });
+        }
+    </script>
 </body>
 </html>
